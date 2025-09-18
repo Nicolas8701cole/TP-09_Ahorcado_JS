@@ -1,9 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using TP03.Models;
-
-namespace TP03.Controllers;
-
+using TP04___Jugando_al_Ahorcado.Models;
+namespace TP04___Jugando_al_Ahorcado.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -12,9 +10,94 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
+    
+//Arreglar los errores de homecontroler, pasar los procesos y los calculos de models a javascript y 1 o 2 consignas
 
     public IActionResult Index()
     {
-        return View();
+                var contenido1 = new Contenido();
+
+        // Guardar objeto serializado
+        HttpContext.Session.SetString("usuario", Objeto.ObjectToString(contenido1));
+
+        // Guardar nombre separado
+        HttpContext.Session.SetString("nombreUsuario", nombre);
+        
+        Contenido.InicializarContenido();
+        Contenido.iniciarJuego();
+        return View("Index");
+    }
+    public IActionResult Juego()
+    {
+        ViewBag.PalabraParcial = Contenido.obtenerPalabraMedioEcha();
+        ViewBag.Intentos = Contenido.intentos;
+        ViewBag.Errores = Contenido.sumarLetrasErroneas(); 
+        ViewBag.DicLetrasUsadas = Contenido.DicLetrasUsadas.Values;
+        return View("Juego");
+    }
+    public IActionResult ArriesgarLetra(string letra)
+    {
+        if (letra != null && letra != "")
+        {
+            char caracter = letra.ToLower()[0];  //Lo pasa a minusculas para evitar problemas
+
+            if (Contenido.DicLetrasUsadas.ContainsValue(caracter) == false)
+            {
+                Contenido.DicLetrasUsadas.Add(Contenido.DicLetrasUsadas.Count, caracter);
+
+                var palabra = Contenido.DicPalabras[Contenido.PalabraActualId];
+                bool acerto = palabra.arriesgarLetra(caracter);
+
+                if (acerto == false)
+                {
+                    Contenido.sumarIntentos();
+
+                }
+                if (Contenido.obtenerPalabraMedioEcha().Contains("_") == false)
+                {
+                    return RedirectToAction("Resultado", new { gano = true });
+                }
+            }
+        }
+
+        return RedirectToAction("Juego");
+    }
+
+    public IActionResult ArriesgarPalabra(string palabra)
+    {
+        if (palabra != null && palabra != "")
+        {
+            palabra = palabra.ToLower(); //Lo digo arriba
+            var palabraCorrecta = Contenido.DicPalabras[Contenido.PalabraActualId];
+            bool acerto = palabraCorrecta.arriesgarPalabra(palabra);
+
+            if (acerto)
+            {
+                return RedirectToAction("Resultado", new { gano = true });
+            }
+            else
+            {
+                Contenido.sumarIntentos();
+                return RedirectToAction("Resultado", new { gano = false });
+            }
+        }
+
+        return RedirectToAction("Juego");
+    }
+
+    public IActionResult Resultado(bool gano)
+    {
+        //Añadir que me traigan un string palabra que sea el resultado correcto y eso mandarlo como ViewBag.PalabraCorrecta
+        ViewBag.Gano = gano;
+        ViewBag.PalabraCorrecta = Contenido.DicPalabras[Contenido.PalabraActualId].palabra; // Lo mete en un ""
+        ViewBag.Intentos = Contenido.intentos;
+        return View("resultado");
+    }
+
+    private IActionResult MostrarEstadoJuego()
+    {
+        ViewBag.PalabraParcial = Contenido.obtenerPalabraMedioEcha();
+        ViewBag.LetrasUsadas = Contenido.DicLetrasUsadas.Values;
+        return View("Juego");
     }
 }

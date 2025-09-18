@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Jugar";
+}
+
+<h2>Palabra:</h2>
+<p style="font-size: 2em; letter-spacing: 10px;">
+    @ViewBag.PalabraParcial
+</p>
+
+<h3>Intentos: @ViewBag.Intentos | Letras fallidas: @ViewBag.Errores</h3>
+
+<h4>Letras utilizadas:</h4>
+@if (ViewBag.LetrasUsadas != null && ViewBag.LetrasUsadas.Count == 1)
+{
+    <p>Ninguna letra usada todavía.</p>
+}
+else if (ViewBag.LetrasUsadas != null)
+{
+    <p>
+        @foreach (var letra in ViewBag.LetrasUsadas)
+        {
+            @letra
+        }
+    </p>
+}
+
+<hr />
+
+<form method="get" action="/Home/ArriesgarLetra">
+    <label for="letra">Ingresar letra:</label>
+    <input type="text" name="letra" maxlength="1" required />
+    <button type="submit">Probar letra</button>
+</form>
+
+<br />
+
+<form method="post" action="/Home/ArriesgarPalabra">
+    <label for="palabra">Arriesgar palabra completa:</label>
+    <input type="text" name="palabra" required />
+    <button type="submit">Arriesgar</button>
+</form>
+
+<br />
+
+<a href="/Home/Index">Volver al inicio</a>

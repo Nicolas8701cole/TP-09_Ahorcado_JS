@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Resultado";
+}
+
+@if (ViewBag.Gano == true)
+{
+    <h1>🎉 ¡Felicidades!</h1>
+    <p>
+        La palabra era: <h3>@ViewBag.PalabraCorrecta</h3>
+        <br/>
+        Intentos utilizados: <h3>@ViewBag.Intentos</h3>
+    </p>
+}
+else
+{
+    <h1>💀 Derrota</h1>
+    <p>
+        Intentos utilizados: <h3>@ViewBag.Intentos</h3>
+    </p>
+}
+
+<a href="/Home/Index">Volver a jugar</a>
