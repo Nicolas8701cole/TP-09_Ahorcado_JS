@@ -1,16 +1,16 @@
 
-public  class Contenido
+public static class Contenido
 {
-    public  Dictionary<int, Palabra> DicPalabras { get; private set; }
-    public  int intentos { get; private set; }
-    public  Dictionary<int, char> DicLetrasUsadas { get; private set; }
-    public  int PalabraActualId { get; private set; }
-    public  void InicializarContenido()
+    public static Dictionary<int, Palabra> DicPalabras { get; private set; }
+    public static int intentos { get; private set; }
+    public static Dictionary<int, char> DicLetrasUsadas { get; private set; }
+    public static int PalabraActualId { get; private set; }
+    public static void InicializarContenido()
     {
         DicLetrasUsadas = new Dictionary<int, char>();
         DicPalabras = new Dictionary<int, Palabra>();
         DicPalabras.Add(id(), new Palabra("confetti"));
-        DicPalabras.Add(id(), new Palabra("mondongo"));
+        DicPalabras.Add(id(), new Palabra("modongo"));
         DicPalabras.Add(id(), new Palabra("rusia"));
         DicPalabras.Add(id(), new Palabra("velocirraptor"));
         DicPalabras.Add(id(), new Palabra("computadora"));
@@ -30,7 +30,7 @@ public  class Contenido
         DicPalabras.Add(id(), new Palabra("andres"));
         DicPalabras.Add(id(), new Palabra("hipopotomonstrosesquipedaliofobia"));
     }
-    public  void iniciarJuego()
+    public static void iniciarJuego()
     {
         InicializarContenido();
         Random numeroRandom = new Random();
@@ -38,7 +38,7 @@ public  class Contenido
         DicLetrasUsadas.Clear();
         intentos = 0;
     }
-    public  string obtenerPalabraMedioEcha()
+    public static string obtenerPalabraMedioEcha()
     {
         var palabra = DicPalabras[PalabraActualId];
         string resultado = "";
@@ -56,11 +56,11 @@ public  class Contenido
         }
         return resultado.Trim();  //.Trim elimina espacios al inicio y al final.
     }
-    public  void sumarIntentos()
+    public static void sumarIntentos()
     {
         intentos++;
     }
-    public  string sumarLetrasErroneas()
+    public static string sumarLetrasErroneas()
     {
         var palabra = DicPalabras[PalabraActualId];
         string errores = "";
@@ -75,7 +75,7 @@ public  class Contenido
 
         return errores.Trim();
     }
-    private  int id()
+    private static int id()
     {
         int idFinal = 0;
         int finalizo = 0;

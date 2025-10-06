@@ -1,4 +1,4 @@
-namespace TP03.Models;
+namespace TP04___Jugando_al_Ahorcado.Models;
 
 public class ErrorViewModel
 {

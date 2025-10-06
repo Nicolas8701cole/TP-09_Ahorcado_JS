@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TP04___Jugando_al_Ahorcado.Models;
+
 namespace TP04___Jugando_al_Ahorcado.Controllers;
+
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -10,19 +12,9 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
-    
-//Arreglar los errores de homecontroler, pasar los procesos y los calculos de models a javascript y 1 o 2 consignas
 
     public IActionResult Index()
     {
-                var contenido1 = new Contenido();
-
-        // Guardar objeto serializado
-        HttpContext.Session.SetString("usuario", Objeto.ObjectToString(contenido1));
-
-        // Guardar nombre separado
-        HttpContext.Session.SetString("nombreUsuario", nombre);
-        
         Contenido.InicializarContenido();
         Contenido.iniciarJuego();
         return View("Index");
