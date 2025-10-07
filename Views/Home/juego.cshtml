@@ -1,45 +1,50 @@
 @{
     ViewData["Title"] = "Jugar";
 }
+<script src="~/js/juego.js" defer></script>
 
-<h2>Palabra:</h2>
-<p style="font-size: 2em; letter-spacing: 10px;">
-    @ViewBag.PalabraParcial
-</p>
+<main>
+  <h2>Ahorcado</h2>
+  <input type="hidden" id="palabraServer" value="@ViewBag.Palabra" />
+  <div>
+    <strong>Palabra:</strong>
+    <p id="palabra"></p>
+  </div>
 
-<h3>Intentos: @ViewBag.Intentos | Letras fallidas: @ViewBag.Errores</h3>
+  <div>
+    <strong>Intentos:</strong>
+    <p id="intentos">0</p>
+  </div>
 
-<h4>Letras utilizadas:</h4>
-@if (ViewBag.LetrasUsadas != null && ViewBag.LetrasUsadas.Count == 1)
-{
-    <p>Ninguna letra usada todavía.</p>
-}
-else if (ViewBag.LetrasUsadas != null)
-{
-    <p>
-        @foreach (var letra in ViewBag.LetrasUsadas)
-        {
-            @letra
-        }
-    </p>
-}
+  <div>
+    <strong>Letras usadas (fallidas):</strong>
+    <p id="usadas"></p>
+  </div>
 
-<hr />
+  <div id="msg"></div>
 
-<form method="get" action="/Home/ArriesgarLetra">
-    <label for="letra">Ingresar letra:</label>
-    <input type="text" name="letra" maxlength="1" required />
-    <button type="submit">Probar letra</button>
-</form>
+  <hr />
 
-<br />
+  <div>
+    <label>Ingresar letra:</label>
+    <input type="text" id="entrada" maxlength="1" />
+    <button id="btnLetra" type="button">Arriesgar letra</button>
+  </div>
 
-<form method="post" action="/Home/ArriesgarPalabra">
-    <label for="palabra">Arriesgar palabra completa:</label>
-    <input type="text" name="palabra" required />
-    <button type="submit">Arriesgar</button>
-</form>
+  <div>
+    <label>Arriesgar palabra completa:</label>
+    <input type="text" id="entradaPalabra" />
+    <button id="btnPalabra" type="button">Arriesgar palabra</button>
+  </div>
 
-<br />
+  <div>
+    <a id="btnWin"  href="#" style="display:none;">Terminar (Ganaste)</a>
+    <a id="btnLose" href="#" style="display:none;">Terminar (Perdiste)</a>
+  </div>
 
-<a href="/Home/Index">Volver al inicio</a>
+  <div>
+    <a href="@Url.Action("Index","Home")">Volver al inicio</a>
+  </div>
+</main>
+
+<script src="~/js/juego.js"></script>

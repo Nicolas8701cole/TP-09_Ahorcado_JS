@@ -21,12 +21,17 @@ public class HomeController : Controller
     }
     public IActionResult Juego()
     {
-        ViewBag.PalabraParcial = Contenido.obtenerPalabraMedioEcha();
-        ViewBag.Intentos = Contenido.intentos;
-        ViewBag.Errores = Contenido.sumarLetrasErroneas(); 
-        ViewBag.DicLetrasUsadas = Contenido.DicLetrasUsadas.Values;
+        ViewBag.Palabra = Contenido.DicPalabras[Contenido.PalabraActualId].palabra;
         return View("Juego");
     }
+    public IActionResult Resultado(bool gano, int intentos)
+    {
+        ViewBag.Gano = gano;
+        ViewBag.Intentos = intentos;
+        ViewBag.PalabraCorrecta = Contenido.DicPalabras[Contenido.PalabraActualId].palabra;
+        return View();
+    }
+
     public IActionResult ArriesgarLetra(string letra)
     {
         if (letra != null && letra != "")
@@ -43,11 +48,17 @@ public class HomeController : Controller
                 if (acerto == false)
                 {
                     Contenido.sumarIntentos();
+                    // Si se oasa del siguiente límite pierde
+                    const int lím = 10;
+                    if (Contenido.intentos >= lím)
+                    {
+                        return RedirectToAction("Resultado", new { gano = false, intentos = Contenido.intentos });
+                    }
 
                 }
                 if (Contenido.obtenerPalabraMedioEcha().Contains("_") == false)
                 {
-                    return RedirectToAction("Resultado", new { gano = true });
+                    return RedirectToAction("Resultado", new { gano = true, intentos = Contenido.intentos });
                 }
             }
         }
@@ -65,26 +76,26 @@ public class HomeController : Controller
 
             if (acerto)
             {
-                return RedirectToAction("Resultado", new { gano = true });
+                return RedirectToAction("Resultado", new { gano = true, intentos = Contenido.intentos });
             }
             else
             {
                 Contenido.sumarIntentos();
-                return RedirectToAction("Resultado", new { gano = false });
+                return RedirectToAction("Resultado", new { gano = false, intentos = Contenido.intentos });
             }
         }
 
         return RedirectToAction("Juego");
     }
 
-    public IActionResult Resultado(bool gano)
-    {
-        //Añadir que me traigan un string palabra que sea el resultado correcto y eso mandarlo como ViewBag.PalabraCorrecta
-        ViewBag.Gano = gano;
-        ViewBag.PalabraCorrecta = Contenido.DicPalabras[Contenido.PalabraActualId].palabra; // Lo mete en un ""
-        ViewBag.Intentos = Contenido.intentos;
-        return View("resultado");
-    }
+    //public IActionResult Resultado(bool gano)
+    //{
+    //Añadir que me traigan un string palabra que sea el resultado correcto y eso mandarlo como ViewBag.PalabraCorrecta
+    //ViewBag.Gano = gano;
+    //ViewBag.PalabraCorrecta = Contenido.DicPalabras[Contenido.PalabraActualId].palabra; // Lo mete en un ""
+    //ViewBag.Intentos = Contenido.intentos;
+    //return View("resultado");
+    //}
 
     private IActionResult MostrarEstadoJuego()
     {
