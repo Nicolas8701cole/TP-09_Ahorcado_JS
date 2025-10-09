@@ -15,7 +15,6 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        Contenido.InicializarContenido();
         Contenido.iniciarJuego();
         return View("Index");
     }

@@ -1,4 +1,5 @@
-﻿document.addEventListener('DOMContentLoaded', function () {
+﻿/*
+document.addEventListener('DOMContentLoaded', function () {
   //Cliente pipipi
   var PalabraSecreta = (document.getElementById('palabraServer').value || '').toLowerCase();
   var CantidadIntentos = 0;
@@ -137,3 +138,4 @@
   function MostrarMensaje(texto) { if (Mensaje) Mensaje.textContent = texto; }
   function LimpiarMensaje() { if (Mensaje) Mensaje.textContent = ''; }
 });
+*/
